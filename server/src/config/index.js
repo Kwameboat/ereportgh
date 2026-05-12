@@ -3,7 +3,8 @@ const path = require('path');
 /* Load server/.env regardless of cwd (cPanel "Run JS script" often uses repo root). */
 require('dotenv').config({
   path: path.join(__dirname, '..', '..', '.env'),
-  override: process.env.NODE_ENV !== 'production',
+  /* cPanel often exports MYSQL_* for root; server/.env must win on shared hosts */
+  override: true,
 });
 
 function env(name, fallback = undefined) {
