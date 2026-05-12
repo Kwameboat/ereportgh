@@ -56,7 +56,18 @@ router.post('/login', loginLimiter, asyncHandler(async (req, res) => {
     e.status = 400;
     throw e;
   }
-  const [rows] = await pool.query('SELECT * FROM admins WHERE username = ?', [String(username)]);
+  let rows;
+  try {
+    [rows] = await pool.query('SELECT * FROM admins WHERE username = ?', [String(username)]);
+  } catch (dbErr) {
+    // eslint-disable-next-line no-console
+    console.error('admin login DB error', dbErr.code || '', dbErr.message);
+    const e = new Error(
+      'Could not connect to the database. Set MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, and MYSQL_DATABASE in cPanel (Node.js app → Environment variables) to match server/.env, quote the password if it contains @, restart the app, then open /api/health.'
+    );
+    e.status = 503;
+    throw e;
+  }
   if (!rows.length) {
     const e = new Error('Invalid credentials');
     e.status = 401;

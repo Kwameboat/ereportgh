@@ -1,11 +1,27 @@
 const path = require('path');
+const fs = require('fs');
+const dotenv = require('dotenv');
+
+const envPath = path.join(__dirname, '..', '..', '.env');
 
 /* Load server/.env regardless of cwd (cPanel "Run JS script" often uses repo root). */
-require('dotenv').config({
-  path: path.join(__dirname, '..', '..', '.env'),
+dotenv.config({
+  path: envPath,
   /* cPanel often exports MYSQL_* for root; server/.env must win on shared hosts */
   override: true,
 });
+
+/* Force MYSQL_* again from file so nothing can stomp them after dotenv (some hosts inject env late). */
+try {
+  if (fs.existsSync(envPath)) {
+    const parsed = dotenv.parse(fs.readFileSync(envPath));
+    for (const [k, v] of Object.entries(parsed)) {
+      if (k.startsWith('MYSQL_')) process.env[k] = v;
+    }
+  }
+} catch {
+  /* ignore */
+}
 
 function env(name, fallback = undefined) {
   const v = process.env[name];
