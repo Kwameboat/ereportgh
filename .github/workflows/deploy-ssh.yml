@@ -1,0 +1,50 @@
+# Deploy on push to main: SSH into your server, pull latest, install, migrate.
+#
+# Repo → Settings → Secrets and variables → Actions → New repository secret:
+#   SSH_HOST          e.g. results.yoursite.com or 203.0.113.10
+#   SSH_USER          SSH login user (often your cPanel username)
+#   SSH_PRIVATE_KEY   Full contents of the *private* key (-----BEGIN ... OPENSSH PRIVATE KEY-----)
+#   DEPLOY_PATH       absolute path on server to repo root (folder containing server/ and client/)
+# Optional:
+#   SSH_PORT          omit for 22
+#   DEPLOY_POST_CMD   one line to restart the app, e.g.  pm2 restart ereport  or  touch tmp/restart.txt
+
+name: Deploy to server
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      DEPLOY_POST_CMD: ${{ secrets.DEPLOY_POST_CMD }}
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          envs: DEPLOY_PATH,DEPLOY_POST_CMD
+          script_stop: true
+          script: |
+            set -e
+            cd "$DEPLOY_PATH"
+            git fetch origin
+            git checkout main
+            git reset --hard origin/main
+            mkdir -p server/uploads
+            cd server
+            npm ci --omit=dev
+            NODE_ENV=production node src/db/migrate.js
+            if [ -n "$DEPLOY_POST_CMD" ]; then
+              eval "$DEPLOY_POST_CMD"
+            fi
