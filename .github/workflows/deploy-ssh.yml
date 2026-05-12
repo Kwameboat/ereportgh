@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ secrets.SSH_HOST != '' && secrets.SSH_USER != '' && secrets.SSH_PRIVATE_KEY != '' && secrets.DEPLOY_PATH != '' }}
     runs-on: ubuntu-latest
     env:
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
