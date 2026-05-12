@@ -2,26 +2,48 @@ const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
 
-const envPath = path.join(__dirname, '..', '..', '.env');
-
-/* Load server/.env regardless of cwd (cPanel "Run JS script" often uses repo root). */
-dotenv.config({
-  path: envPath,
-  /* cPanel often exports MYSQL_* for root; server/.env must win on shared hosts */
-  override: true,
-});
-
-/* Force MYSQL_* again from file so nothing can stomp them after dotenv (some hosts inject env late). */
-try {
-  if (fs.existsSync(envPath)) {
-    const parsed = dotenv.parse(fs.readFileSync(envPath));
-    for (const [k, v] of Object.entries(parsed)) {
-      if (k.startsWith('MYSQL_')) process.env[k] = v;
-    }
+/**
+ * Resolve server/.env when started from cPanel/Passenger (cwd may not be server/).
+ * Set ENV_FILE_PATH to an absolute path to override.
+ */
+function resolveEnvFilePath() {
+  const explicit = process.env.ENV_FILE_PATH;
+  if (explicit) {
+    const p = path.resolve(explicit);
+    if (fs.existsSync(p)) return { path: p, found: true };
   }
-} catch {
-  /* ignore */
+  const fromModule = path.resolve(path.join(__dirname, '..', '..', '.env'));
+  if (fs.existsSync(fromModule)) return { path: fromModule, found: true };
+  const cwdServer = path.resolve(path.join(process.cwd(), 'server', '.env'));
+  if (fs.existsSync(cwdServer)) return { path: cwdServer, found: true };
+  const cwdEnv = path.resolve(path.join(process.cwd(), '.env'));
+  if (fs.existsSync(cwdEnv)) return { path: cwdEnv, found: true };
+  return { path: fromModule, found: fs.existsSync(fromModule) };
 }
+
+const { path: envPath, found: envFileFound } = resolveEnvFilePath();
+
+function applyEnvFile() {
+  if (!envFileFound) return;
+  try {
+    const raw = fs.readFileSync(envPath, 'utf8');
+    const text = raw.replace(/^\uFEFF/, '');
+    const parsed = dotenv.parse(text);
+    for (const [rawKey, rawVal] of Object.entries(parsed)) {
+      const key = String(rawKey)
+        .replace(/\uFEFF/g, '')
+        .replace(/\r/g, '')
+        .trim();
+      if (!key || key.startsWith('#')) continue;
+      process.env[key] = rawVal === undefined || rawVal === null ? '' : String(rawVal);
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+dotenv.config({ path: envPath, override: true });
+applyEnvFile();
 
 function env(name, fallback = undefined) {
   const v = process.env[name];
@@ -48,6 +70,9 @@ function corsOriginList() {
 const nodeEnv = env('NODE_ENV', 'development');
 
 module.exports = {
+  /** Where .env was resolved (for /api/health when DB is down). */
+  envResolvedPath: envPath,
+  envFileFound,
   port: parseInt(env('PORT', '4000'), 10),
   host: env('HOST', '0.0.0.0'),
   nodeEnv,

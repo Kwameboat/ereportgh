@@ -26,6 +26,8 @@ router.get(
         error: 'Database unavailable',
         mysqlUser: config.mysql.user,
         mysqlDatabase: config.mysql.database,
+        envFileFound: config.envFileFound,
+        envResolvedPath: config.envResolvedPath,
       });
     }
   })
