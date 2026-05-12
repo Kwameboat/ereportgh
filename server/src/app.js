@@ -25,7 +25,8 @@ function buildHelmet() {
         scriptSrc: [
           "'self'",
           'https://cdn.tailwindcss.com',
-          ...(isProd ? [] : ["'unsafe-eval'"]),
+          /* Tailwind browser build uses eval(); required for index.html / payment.html */
+          "'unsafe-eval'",
         ],
         styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
         /* Allow HTTPS images (Unsplash & redirects) for hero stock photos */
