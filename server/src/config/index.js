@@ -1,5 +1,10 @@
-/* .env should win over stray shell vars (e.g. MYSQL_USER=root) in local dev */
-require('dotenv').config({ override: process.env.NODE_ENV !== 'production' });
+const path = require('path');
+
+/* Load server/.env regardless of cwd (cPanel "Run JS script" often uses repo root). */
+require('dotenv').config({
+  path: path.join(__dirname, '..', '..', '.env'),
+  override: process.env.NODE_ENV !== 'production',
+});
 
 function env(name, fallback = undefined) {
   const v = process.env[name];
