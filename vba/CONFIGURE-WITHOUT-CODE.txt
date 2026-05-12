@@ -1,0 +1,70 @@
+================================================================================
+  STUDENT RESULTS — CONFIGURE EXCEL WITHOUT OPENING ANY CODE
+================================================================================
+
+You do NOT need to learn programming. You only fill in TWO cells on one sheet.
+
+--------------------------------------------------------------------------------
+STEP 1 — FIND OR CREATE THE "CONFIG" SHEET
+--------------------------------------------------------------------------------
+
+  • Look at the bottom of Excel for sheet tabs (NAMES, REPORT, etc.).
+  • If you see a tab named exactly:  CONFIG  → go to Step 2.
+  • If there is NO tab named CONFIG:
+      1. Right-click any sheet tab → Insert → Worksheet → OK.
+      2. Double-click the new tab name and type:  CONFIG
+         (Must be spelled exactly like that, all capitals is fine.)
+
+--------------------------------------------------------------------------------
+STEP 2 — TYPE ONLY THESE TWO VALUES (COLUMN B)
+--------------------------------------------------------------------------------
+
+  Click cell B1 and type the WEB ADDRESS your head office gave you.
+  It must look like a normal website link and usually starts with:
+      https://
+  It must END with:
+      /api/excel/ingest
+  Example shape (your real link will be different):
+      https://results.yourschool.edu/api/excel/ingest
+
+  Click cell B2 and type the SECRET KEY your head office gave you.
+  It is long text — copy and paste it carefully. Do not share it publicly.
+
+  Optional: In A1 you can type a label like "Portal link" and in A2 "Secret key"
+  — only to remind yourself. The macro reads B1 and B2 only.
+
+--------------------------------------------------------------------------------
+STEP 3 — SAVE THE FILE
+--------------------------------------------------------------------------------
+
+  Save as macro-enabled workbook (.xlsm) if you are asked.
+
+--------------------------------------------------------------------------------
+STEP 4 — EVERY TIME YOU SEND RESULTS TO THE PORTAL
+--------------------------------------------------------------------------------
+
+  • On the REPORT sheet, fill YEAR (cell H9) and TERM (cell H10).
+  • Run the sync button / macro the same way you always have.
+
+--------------------------------------------------------------------------------
+TROUBLESHOOTING (PLAIN WORDS)
+--------------------------------------------------------------------------------
+
+  "Nothing happens" or errors about connection
+    → Check internet. Check B1 has no extra spaces and is the full link.
+
+  "Upload failed" or wrong password
+    → Check B2 matches exactly what head office sent. Ask for a new key if unsure.
+
+  You cannot find CONFIG
+    → Create it again (Step 1). Put the same B1 and B2 values back.
+
+--------------------------------------------------------------------------------
+WHO TO ASK FOR B1 AND B2
+--------------------------------------------------------------------------------
+
+  Your IT person or whoever runs the results server gives you:
+    • The full https://.../api/excel/ingest address  (goes in B1)
+    • The Excel API key                          (goes in B2)
+
+================================================================================

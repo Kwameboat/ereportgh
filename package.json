@@ -1,0 +1,16 @@
+{
+  "name": "school-results",
+  "private": true,
+  "description": "School result management — run API from /server",
+  "scripts": {
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "install:server": "npm install --prefix server",
+    "migrate": "npm run migrate --prefix server",
+    "demo:ingest": "npm run demo:ingest --prefix server",
+    "start": "npm start --prefix server",
+    "dev": "npm run dev --prefix server",
+    "configure:mariam-excel": "node tools/configure-mariam-xlsm.js",
+    "health:check": "node tools/system-health-check.js"
+  }
+}

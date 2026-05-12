@@ -1,0 +1,34 @@
+================================================================================
+  FOR YOU (HEAD OFFICE / DEPLOYER) — PRE-FILL SO SCHOOLS TYPE NOTHING
+================================================================================
+
+Goal: Schools only use NAMES + REPORT + the sync button. They never touch B1/B2
+if you ship the workbook already configured.
+
+WHAT TO DO ONCE BEFORE YOU SEND THE WORKBOOK TO A SCHOOL
+
+  1. Open the final .xlsm file in Excel.
+
+  2. Create or open the CONFIG sheet (see CONFIGURE-WITHOUT-CODE.txt if needed).
+
+  3. Put YOUR live values in:
+       B1 = https://<your-public-server>/api/excel/ingest
+       B2 = the same secret as EXCEL_API_KEY in the server .env file
+            (one shared key for trusted uploads is typical; or issue per-school
+             keys if your server supports multiple keys later).
+
+  4. Optional: Right-click CONFIG tab → Hide Sheet — so casual users do not
+     change the link or key by mistake.
+
+  5. Save and password-protect structure if you want (Review → Protect Workbook).
+
+  6. Send this file + only CONFIGURE-WITHOUT-CODE.txt if they ever need to
+     re-enter B1/B2 (e.g. server URL change).
+
+WHY THIS WORKS
+
+  The macro always reads B1 and B2 first. If they are filled, VBA constants are
+  ignored. Schools therefore configure "without code" — they only edit Excel
+  cells, unless you already filled them for them.
+
+================================================================================

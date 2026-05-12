@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+!.env.example
+server/.env
+server/uploads/
+*.log
+mariam.zip
+xlsm_extract/
+~$*
+31540010
+temp.zip
+TEST 1.zip

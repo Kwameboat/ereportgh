@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="application-name" content="Student Results" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Student Results" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+  <title>Admin login</title>
+  <style>
+    :root {
+      --bg-dark: #0b0f1a;
+      --bg-mid: #151f31;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text-main: #f8fafc;
+      --text-soft: #cbd5e1;
+      --input-bg: rgba(255, 255, 255, 0.12);
+      --btn-from: #fff2b3;
+      --btn-to: #d8aa2d;
+      --shadow-gold: rgba(216, 170, 45, 0.35);
+      --lamp-on: rgba(255, 215, 118, 0.44);
+      --lamp-off: rgba(255, 215, 118, 0.08);
+      --danger: #fca5a5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 76% 16%, rgba(250, 207, 94, 0.12), transparent 34%),
+        linear-gradient(140deg, #080b14 2%, var(--bg-dark) 44%, var(--bg-mid) 100%);
+      overflow: hidden;
+      padding: 24px;
+    }
+
+    .scene {
+      position: relative;
+      width: min(980px, 100%);
+      min-height: 560px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background:
+        radial-gradient(circle at 22% 42%, rgba(255, 201, 95, 0.12), transparent 44%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.18));
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.46);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .lamp-side {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .lamp-glow {
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      filter: blur(10px);
+      background: radial-gradient(circle, var(--lamp-on) 0%, rgba(255, 210, 112, 0.16) 48%, transparent 75%);
+      transition: background 0.45s ease, opacity 0.45s ease;
+      opacity: 1;
+      pointer-events: none;
+    }
+
+    .lamp-glow::after {
+      content: "";
+      position: absolute;
+      inset: -18%;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 18deg,
+        rgba(255, 221, 130, 0) 0deg,
+        rgba(255, 227, 142, 0.58) 58deg,
+        rgba(255, 232, 164, 0.18) 98deg,
+        rgba(255, 221, 130, 0) 138deg
+      );
+      filter: blur(8px);
+      opacity: 0;
+      transform: rotate(-20deg) scale(0.9);
+    }
+
+    .lamp {
+      position: relative;
+      width: 170px;
+      height: 250px;
+      z-index: 2;
+    }
+
+    .shade {
+      width: 150px;
+      height: 70px;
+      margin: 0 auto;
+      border-radius: 100px 100px 24px 24px;
+      background: linear-gradient(180deg, #fff, #e8edf3);
+      box-shadow: 0 12px 36px rgba(255, 255, 255, 0.24);
+    }
+
+    .rod {
+      width: 8px;
+      height: 112px;
+      margin: -2px auto 0;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f7fafc, #d0d9e6);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.22);
+      position: relative;
+    }
+
+    .switch {
+      position: absolute;
+      right: -16px;
+      top: 64px;
+      width: 2px;
+      height: 54px;
+      background: rgba(255, 224, 148, 0.65);
+      transform-origin: top center;
+      transition: height 0.18s ease, transform 0.18s ease;
+      cursor: pointer;
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: -5px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ffd785;
+      box-shadow: 0 0 12px rgba(255, 208, 110, 0.75);
+    }
+
+    .switch.pulled {
+      height: 82px;
+      transform: translateY(4px);
+    }
+
+    .base {
+      width: 128px;
+      height: 14px;
+      margin: 10px auto 0;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #f4f7fb, #d4dce8);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-side {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 34px;
+    }
+
+    .card {
+      width: min(360px, 100%);
+      border-radius: 24px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 16px 46px rgba(0, 0, 0, 0.4);
+      padding: 28px;
+    }
+
+    .title {
+      text-align: center;
+      margin: 0 0 18px;
+      font-size: 1.65rem;
+      letter-spacing: 0.02em;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin: -8px 0 24px;
+      color: var(--text-soft);
+      font-size: 0.92rem;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.86rem;
+      margin-bottom: 6px;
+      color: #e2e8f0;
+      letter-spacing: 0.02em;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 12px 13px;
+      background: var(--input-bg);
+      color: #fff;
+      outline: none;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    input::placeholder {
+      color: #cbd5e1b0;
+    }
+
+    input:focus {
+      border-color: rgba(255, 213, 122, 0.78);
+      box-shadow: 0 0 0 3px rgba(253, 224, 149, 0.2);
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    #err {
+      margin: 6px 0 12px;
+      color: var(--danger);
+      font-size: 0.88rem;
+      min-height: 1.2em;
+    }
+
+    #err.hidden {
+      visibility: hidden;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #2f2205;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--btn-from), var(--btn-to));
+      box-shadow: 0 8px 24px var(--shadow-gold);
+      transition: transform 0.18s ease, filter 0.18s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.04);
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .footer-link {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+    }
+
+    .footer-link a {
+      color: #fde9a7;
+      text-decoration: none;
+    }
+
+    .lamp-toggle {
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    .toggle-btn {
+      width: auto;
+      min-width: 118px;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #f8fafc;
+      background: rgba(255, 255, 255, 0.11);
+      box-shadow: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lamp-off .lamp-glow {
+      opacity: 0.32;
+      background: radial-gradient(circle, var(--lamp-off) 0%, rgba(255, 210, 112, 0.06) 46%, transparent 75%);
+    }
+
+    .lamp-off .shade {
+      box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+      filter: brightness(0.92);
+    }
+
+    .scene:not(.lamp-off) .lamp-side:hover .lamp-glow::after,
+    .scene:not(.lamp-off):has(.card:hover) .lamp-glow::after {
+      animation: glowSweep 1.05s ease-out;
+    }
+
+    .scene:not(.lamp-off) .card:hover {
+      box-shadow: 0 20px 56px rgba(0, 0, 0, 0.44), 0 0 0 1px rgba(253, 224, 149, 0.16);
+    }
+
+    .scene:not(.lamp-off) .card:hover,
+    .scene:not(.lamp-off) .lamp-side:hover ~ .card-side .card {
+      animation: cardGlowPulse 1.2s ease-out;
+    }
+
+    .scene:not(.lamp-off) .lamp-side:hover .lamp-glow {
+      opacity: 1;
+      filter: blur(9px) saturate(1.2);
+    }
+
+    @keyframes glowSweep {
+      0% {
+        opacity: 0;
+        transform: rotate(-28deg) scale(0.9);
+      }
+      22% {
+        opacity: 0.95;
+      }
+      100% {
+        opacity: 0;
+        transform: rotate(34deg) scale(1.08);
+      }
+    }
+
+    @keyframes cardGlowPulse {
+      0% {
+        box-shadow: 0 16px 46px rgba(0, 0, 0, 0.4);
+      }
+      40% {
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.48), 0 0 28px rgba(255, 216, 120, 0.22);
+      }
+      100% {
+        box-shadow: 0 16px 46px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .scene {
+        grid-template-columns: 1fr;
+        min-height: 680px;
+      }
+
+      .lamp-side {
+        min-height: 230px;
+        padding-bottom: 0;
+      }
+
+      .card-side {
+        padding-top: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" id="scene">
+    <div class="lamp-side">
+      <div class="lamp-glow"></div>
+      <div class="lamp" aria-hidden="true">
+        <div class="shade"></div>
+        <div class="rod">
+          <div class="switch" id="pullCord" role="button" aria-label="Toggle lamp" tabindex="0"></div>
+        </div>
+        <div class="base"></div>
+      </div>
+    </div>
+    <div class="card-side">
+      <div class="card">
+        <h1 class="title">Welcome</h1>
+        <p class="subtitle">Admin portal login</p>
+        <form id="form">
+          <div class="field">
+            <label for="user">Username</label>
+            <input id="user" autocomplete="username" placeholder="Enter your username" required />
+          </div>
+          <div class="field">
+            <label for="pass">Password</label>
+            <input id="pass" type="password" autocomplete="current-password" placeholder="Enter your password" required />
+          </div>
+          <p id="err" class="hidden"></p>
+          <button type="submit">Sign in</button>
+        </form>
+        <div class="lamp-toggle">
+          <button type="button" class="toggle-btn" id="lampToggle">Lamp: ON</button>
+        </div>
+        <p class="footer-link"><a href="../index.html">Back to home</a></p>
+      </div>
+    </div>
+  </div>
+  <script defer src="/js/admin-login.js"></script>
+  <script>
+    (() => {
+      const scene = document.getElementById('scene');
+      const toggle = document.getElementById('lampToggle');
+      const cord = document.getElementById('pullCord');
+      let on = true;
+
+      function setLamp(next) {
+        on = next;
+        scene.classList.toggle('lamp-off', !on);
+        toggle.textContent = on ? 'Lamp: ON' : 'Lamp: OFF';
+      }
+
+      function toggleLamp() {
+        setLamp(!on);
+      }
+
+      function pullCord() {
+        cord.classList.add('pulled');
+        window.setTimeout(() => {
+          cord.classList.remove('pulled');
+        }, 180);
+        toggleLamp();
+      }
+
+      toggle.addEventListener('click', () => {
+        toggleLamp();
+      });
+
+      cord.addEventListener('click', pullCord);
+      cord.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          pullCord();
+        }
+      });
+
+      cord.addEventListener('mousedown', () => {
+        cord.classList.add('pulled');
+      });
+      window.addEventListener('mouseup', () => {
+        cord.classList.remove('pulled');
+      });
+
+      window.addEventListener('blur', () => {
+        cord.classList.remove('pulled');
+      });
+
+      setLamp(true);
+    })();
+  </script>
+  <script defer src="/js/pwa-register.js"></script>
+</body>
+</html>

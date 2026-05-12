@@ -1,0 +1,152 @@
+================================================================================
+  School Results — cPanel / shared hosting deployment (Node.js + MySQL)
+================================================================================
+
+WHAT YOU NEED ON THE HOST
+  • cPanel with "Setup Node.js App" (or similar) — Node.js 18 or newer
+  • MySQL® Databases — create a database + user with ALL PRIVILEGES on that DB
+  • SSH access (recommended) — to run npm install and migrations; many hosts allow it
+
+WHAT IS IN THIS ZIP
+  • server/        — Express API (listens on PORT from environment)
+  • client/        — Static web UI (served by the same Node process)
+  • tools/         — Optional local utilities (Excel URL wiring); not required on server
+
+THIS ZIP DOES NOT INCLUDE
+  • server/node_modules — install on the server with npm (smaller upload)
+  • server/.env         — never upload secrets; create on the server (see below)
+
+--------------------------------------------------------------------------------
+1) UPLOAD AND EXTRACT
+--------------------------------------------------------------------------------
+  1. In cPanel → File Manager, upload this ZIP to your account (e.g. home directory
+     or below public_html).
+  2. Extract the archive.
+  3. Recommended folder layout (example):
+       ~/apps/school-results/
+     Or inside your domain folder if your host requires the app root there.
+
+--------------------------------------------------------------------------------
+2) MYSQL (cPanel → MySQL® Databases)
+--------------------------------------------------------------------------------
+  • Create database: e.g. username_school_results
+  • Create user + strong password.
+  • Add user to database with ALL PRIVILEGES.
+  • Note these values:
+      - Host     → usually "localhost" or "127.0.0.1" (your host may show this)
+      - Database name, username, password (exact spelling matters)
+
+--------------------------------------------------------------------------------
+3) APPLICATION STARTUP FILE AND ROOT
+--------------------------------------------------------------------------------
+  In "Setup Node.js App" (or your host's Node UI):
+  • Application root: the folder that contains BOTH "server" and "client"
+        (same level as this DEPLOY_CPANEL.txt after extract).
+  • Application startup file:
+        server/src/index.js
+  • Application URL: choose your domain or subdomain (must match PUBLIC_BASE_URL).
+
+  The panel usually sets PORT automatically — do not hardcode a conflicting PORT in
+  .env unless your host tells you to.
+
+--------------------------------------------------------------------------------
+4) ENVIRONMENT VARIABLES (production)
+--------------------------------------------------------------------------------
+  Copy on the server:
+
+      cp server/.env.example server/.env
+
+  Edit server/.env (File Manager → Edit, or SSH editor). Minimum for going live:
+
+  REQUIRED FOR PRODUCTION (the app refuses weak defaults when NODE_ENV=production):
+    NODE_ENV=production
+    PUBLIC_BASE_URL=https://YOUR_DOMAIN   (no trailing slash — must be HTTPS)
+    JWT_SECRET=<paste 40+ random characters>
+    EXCEL_API_KEY=<paste 16+ random characters>
+    MYSQL_HOST=localhost                  (or value from host)
+    MYSQL_PORT=3306                       (unless host uses another port)
+    MYSQL_USER=<your_mysql_user>
+    MYSQL_PASSWORD=<your_mysql_password>
+    MYSQL_DATABASE=<your_database_name>
+
+  RECOMMENDED BEHIND CPANEL / APACHE / NGINX PROXY:
+    TRUST_PROXY=1
+
+  OPTIONAL — lock browser API access to your site(s):
+    CORS_ORIGINS=https://YOUR_DOMAIN
+
+  PAYSTACK (only if you use online payments):
+    PAYSTACK_SECRET_KEY=sk_live_...
+    PAYSTACK_CALLBACK_URL=https://YOUR_DOMAIN/api/payments/callback   (if used)
+
+  FIRST ADMIN (created by migrate if no admins exist):
+    SEED_ADMIN_USERNAME=admin
+    SEED_ADMIN_PASSWORD=<choose a strong password>
+
+  Strong secrets: use a password manager or:
+    openssl rand -hex 32
+
+--------------------------------------------------------------------------------
+5) INSTALL DEPENDENCIES + DATABASE MIGRATION (SSH)
+--------------------------------------------------------------------------------
+  From SSH, cd to the folder that contains "server" and "client", then:
+
+      cd server
+      npm install --omit=dev
+      NODE_ENV=production node src/db/migrate.js
+
+  If your host does not provide SSH, use their "Terminal" feature if available,
+  or contact support to run these two commands on your deployment path.
+
+--------------------------------------------------------------------------------
+6) RESTART THE NODE.JS APPLICATION
+--------------------------------------------------------------------------------
+  In the Node.js App panel: Stop → Run NPM Install (if offered) → Start / Restart.
+
+--------------------------------------------------------------------------------
+7) VERIFY
+--------------------------------------------------------------------------------
+  Open in browser (replace with your domain):
+
+      https://YOUR_DOMAIN/api/health
+
+  Expect JSON with "ok": true and "db": true.
+
+  Admin UI:
+      https://YOUR_DOMAIN/admin/login.html
+
+  Public checker:
+      https://YOUR_DOMAIN/
+
+--------------------------------------------------------------------------------
+8) FILE UPLOADS (PDF reports)
+--------------------------------------------------------------------------------
+  The app writes under server/uploads/. Ensure this directory exists and is writable
+  by the Node process (create it if missing). If uploads fail, ask your host which
+  Linux user runs Node.js and chmod/chown that folder accordingly (often 755 or 775).
+
+--------------------------------------------------------------------------------
+9) EXCEL / VBA (MARIAM workbook)
+--------------------------------------------------------------------------------
+  On a PC with Excel, point the workbook CONFIG sheet to your live API:
+    • URL cell (B1):  https://YOUR_DOMAIN/api/excel/ingest
+    • API key (B2):   same value as EXCEL_API_KEY in server/.env
+
+  If you still have the project on your PC, from project root you can run:
+      npm run configure:mariam-excel
+  after setting PUBLIC_BASE_URL and EXCEL_API_KEY in server/.env — then copy the
+  generated .xlsm to staff machines.
+
+--------------------------------------------------------------------------------
+10) TROUBLESHOOTING
+--------------------------------------------------------------------------------
+  • "Refusing to start in production" — JWT_SECRET / EXCEL_API_KEY too short or still
+    dev defaults; PUBLIC_BASE_URL must be https:// for non-localhost production.
+  • Health shows "db": false — wrong MYSQL_* host/user/password/database or user
+    not granted on DB.
+  • 502 / blank page — Node app not started, wrong startup file path, or PORT mismatch.
+  • Mixed content / broken PDF links — PUBLIC_BASE_URL must match the real HTTPS URL.
+
+================================================================================
+  End of deployment guide
+================================================================================

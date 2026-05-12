@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="application-name" content="Student Results" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Student Results" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+  <title>Student Results — View your report card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'system-ui', 'sans-serif'],
+            display: ['Fraunces', 'Georgia', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="/css/public-theme.css" />
+</head>
+<body class="min-h-screen overflow-x-hidden bg-slate-50 font-sans text-slate-800 antialiased">
+  <!-- Nav -->
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-900/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="/assets/ereports-logo.png" alt="eReports logo" class="h-9 w-9 rounded-xl object-cover ring-1 ring-white/25 shadow-lg shadow-brand-500/25" />
+        <span class="font-display text-lg font-semibold tracking-tight text-white">eReports</span>
+      </a>
+      <nav class="flex max-w-[70%] flex-1 items-center justify-end gap-1 overflow-x-auto pb-1 text-xs font-medium sm:max-w-none sm:gap-2 sm:text-sm">
+        <a href="#steps" class="shrink-0 rounded-full px-2.5 py-1.5 text-slate-300 sm:px-3 hover:bg-white/10 hover:text-white">How it works</a>
+        <a href="#check" class="shrink-0 rounded-full px-2.5 py-1.5 text-slate-300 sm:px-3 hover:bg-white/10 hover:text-white">View results</a>
+        <a href="admin/login.html" class="shrink-0 rounded-full px-2.5 py-1.5 text-slate-400 hover:text-white">Staff</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero: 3D slider + result form -->
+  <section id="check" class="hero-section-themed relative scroll-mt-20 overflow-x-hidden pb-8 pt-6 sm:pb-12" data-hero data-hero-slide="0"
+    style="--hero-top:#020617;--hero-mid:#115e59;--hero-bot:#f8fafc">
+    <div class="hero-topwash pointer-events-none absolute inset-x-0 top-0 h-40"></div>
+
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6">
+      <p class="mb-6 text-center font-display text-sm md:text-left">
+        <span class="rounded-full bg-white/10 px-3 py-1 text-slate-300 ring-1 ring-white/10">Results portal</span>
+      </p>
+
+      <div class="grid items-stretch gap-10 lg:grid-cols-12 lg:gap-10">
+        <!-- Hero gallery: fills grid cell (matches form column height on large screens) -->
+        <div class="hero-slider-col relative flex min-h-[22rem] flex-col self-stretch lg:col-span-7 lg:h-full">
+          <div class="slider-3d-root relative h-full min-h-[22rem] w-full flex-1 sm:min-h-[26rem] lg:min-h-[28rem]" data-slider-3d aria-roledescription="carousel">
+            <div class="slider-3d-stage absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl">
+              <!-- Slide 1: students collaborating -->
+              <article class="hero-slide is-active absolute inset-0 overflow-hidden ring-1 ring-white/20">
+                <img
+                  src="/assets/hero/slide-1.jpg"
+                  alt="University students working together at a table with laptops"
+                  class="hero-slide-media absolute inset-0 h-full w-full object-cover"
+                  width="1800"
+                  height="1200"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/65 to-slate-800/20"></div>
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-transparent"></div>
+                <div class="slide-inner relative z-10 flex h-full flex-col justify-end p-6 pb-28 sm:p-8 sm:pb-32 md:p-10">
+                  <p class="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-teal-300">Official reports</p>
+                  <h1 class="font-display max-w-xl text-2xl font-semibold leading-tight text-white drop-shadow-md sm:text-3xl md:text-4xl">
+                    Your child’s results, <span class="italic text-teal-300">secure & instant.</span>
+                  </h1>
+                  <p class="mt-3 max-w-lg text-sm text-slate-200/95 md:text-base">
+                    Reference + one-time PIN opens the PDF — on any device.
+                  </p>
+                </div>
+              </article>
+              <!-- Slide 2: classroom -->
+              <article class="hero-slide absolute inset-0 overflow-hidden ring-1 ring-white/15">
+                <img
+                  src="/assets/hero/slide-2.jpg"
+                  alt="Bright elementary classroom with desks and chairs"
+                  class="hero-slide-media absolute inset-0 h-full w-full object-cover"
+                  width="1800"
+                  height="1200"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/65 to-teal-900/20"></div>
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent"></div>
+                <div class="slide-inner relative z-10 flex h-full flex-col justify-end p-6 pb-28 sm:p-10 sm:pb-32">
+                  <p class="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">Simple steps</p>
+                  <h2 class="font-display max-w-xl text-2xl font-semibold leading-tight text-white drop-shadow-md sm:text-3xl">
+                    Pay online or use a school PIN.
+                  </h2>
+                  <p class="mt-3 max-w-lg text-sm text-emerald-50/95 md:text-base">
+                    Unlock your report in seconds — payment or school-issued PIN.
+                  </p>
+                </div>
+              </article>
+              <!-- Slide 3: graduation -->
+              <article class="hero-slide absolute inset-0 overflow-hidden ring-1 ring-white/15">
+                <img
+                  src="/assets/hero/slide-3.jpg"
+                  alt="Students participating in a lecture or seminar"
+                  class="hero-slide-media absolute inset-0 h-full w-full object-cover"
+                  width="1800"
+                  height="1200"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-indigo-950 via-violet-900/70 to-purple-900/25"></div>
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-transparent"></div>
+                <div class="slide-inner relative z-10 flex h-full flex-col justify-end p-6 pb-28 sm:p-10 sm:pb-32">
+                  <p class="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">Privacy first</p>
+                  <h2 class="font-display max-w-xl text-2xl font-semibold leading-tight text-white drop-shadow-md sm:text-3xl">
+                    Each PIN works once.
+                  </h2>
+                  <p class="mt-3 max-w-lg text-sm text-indigo-100 md:text-base">
+                    After viewing, your PIN is marked used — access stays personal.
+                  </p>
+                </div>
+              </article>
+              <!-- Slide 4: reading / learning -->
+              <article class="hero-slide absolute inset-0 overflow-hidden ring-1 ring-white/15">
+                <img
+                  src="/assets/hero/slide-4.jpg"
+                  alt="Child engaged in hands-on learning activity"
+                  class="hero-slide-media absolute inset-0 h-full w-full object-cover"
+                  width="1800"
+                  height="1200"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-sky-900/55 to-sky-800/25"></div>
+                <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent"></div>
+                <div class="slide-inner relative z-10 flex h-full flex-col justify-end p-6 pb-28 sm:p-10 sm:pb-32">
+                  <p class="mb-2 text-xs font-semibold uppercase tracking-[0.25em] text-sky-300">Ready</p>
+                  <h2 class="font-display max-w-xl text-2xl font-semibold leading-tight text-white drop-shadow-md sm:text-3xl">
+                    Enter details on the right →
+                  </h2>
+                  <p class="mt-3 max-w-lg text-sm text-sky-100 md:text-base">
+                    Optional term/year helps if you have more than one report on file.
+                  </p>
+                </div>
+              </article>
+            </div>
+
+            <!-- Slider controls -->
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex flex-col items-stretch gap-1.5 px-2.5 pb-2.5 sm:px-3 sm:pb-3">
+              <div class="pointer-events-auto flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 bg-black/50 px-2.5 py-2 shadow-lg backdrop-blur-md sm:gap-3 sm:px-3">
+                <div class="flex items-center gap-1.5">
+                  <button type="button" data-slider-prev class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/12 text-white ring-1 ring-white/15 transition hover:bg-white/22" aria-label="Previous slide">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  <button type="button" data-slider-next class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/12 text-white ring-1 ring-white/15 transition hover:bg-white/22" aria-label="Next slide">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+                <div class="flex flex-1 items-center justify-center gap-1.5 sm:justify-end">
+                  <button type="button" data-slide-dot class="slider-dot is-active h-2 w-8 rounded-full bg-white opacity-100 shadow-md shadow-black/30" aria-label="Slide 1" aria-current="true"></button>
+                  <button type="button" data-slide-dot class="slider-dot h-2 w-2 rounded-full bg-white/70 opacity-40" aria-label="Slide 2"></button>
+                  <button type="button" data-slide-dot class="slider-dot h-2 w-2 rounded-full bg-white/70 opacity-40" aria-label="Slide 3"></button>
+                  <button type="button" data-slide-dot class="slider-dot h-2 w-2 rounded-full bg-white/70 opacity-40" aria-label="Slide 4"></button>
+                </div>
+              </div>
+              <p class="pointer-events-none text-center text-[10px] leading-tight text-white/35">
+                Stock photos · <a href="https://unsplash.com/license" target="_blank" rel="noopener noreferrer" class="text-white/45 underline decoration-white/20 underline-offset-2 hover:text-white/70">Unsplash license</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero form -->
+        <div class="flex flex-col justify-center lg:col-span-5 lg:h-full">
+          <div class="hero-form-glass rounded-3xl p-6 sm:p-7">
+            <div class="mb-5 border-b border-white/10 pb-4">
+              <span class="text-xs font-bold uppercase tracking-wider text-teal-200">Unlock report</span>
+              <h2 class="font-display mt-1 text-xl font-bold text-white sm:text-2xl">Pay &amp; view your PDF</h2>
+              <p id="feeNote" class="mt-2 text-sm font-semibold leading-snug text-slate-100">Secure checkout · fee set by your school · PIN issued after payment.</p>
+            </div>
+            <form id="form" class="relative space-y-4">
+              <div>
+                <label class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-slate-100" for="studentId">Student reference</label>
+                <input id="studentId" name="studentId" required autocomplete="off" placeholder="e.g. 1001"
+                  class="w-full rounded-xl border-2 border-white/20 bg-white px-4 py-3.5 text-base font-semibold text-slate-950 shadow-inner outline-none ring-brand-400/40 placeholder:font-semibold placeholder:text-slate-500 focus:border-brand-400 focus:ring-2" />
+              </div>
+              <div>
+                <label class="mb-1.5 block text-xs font-bold uppercase tracking-wide text-slate-100" for="email">Email (for receipt)</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com"
+                  class="w-full rounded-xl border-2 border-white/20 bg-white px-4 py-3.5 text-base font-semibold text-slate-950 shadow-inner outline-none ring-brand-400/40 placeholder:font-semibold placeholder:text-slate-500 focus:border-brand-400 focus:ring-2" />
+              </div>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label class="mb-1.5 block text-xs font-bold text-slate-100" for="term">Term <span class="font-bold text-slate-300">(opt.)</span></label>
+                  <input id="term" name="term" placeholder="e.g. TWO"
+                    class="w-full rounded-xl border-2 border-white/20 bg-white px-3 py-3 text-base font-semibold text-slate-950 outline-none ring-brand-400/40 placeholder:font-semibold placeholder:text-slate-500 focus:border-brand-400 focus:ring-2" />
+                </div>
+                <div>
+                  <label class="mb-1.5 block text-xs font-bold text-slate-100" for="year">Year <span class="font-bold text-slate-300">(opt.)</span></label>
+                  <input id="year" name="year" placeholder="e.g. 2026"
+                    class="w-full rounded-xl border-2 border-white/20 bg-white px-3 py-3 text-base font-semibold text-slate-950 outline-none ring-brand-400/40 placeholder:font-semibold placeholder:text-slate-500 focus:border-brand-400 focus:ring-2" />
+                </div>
+              </div>
+              <button type="submit"
+                class="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-brand-500 via-brand-600 to-teal-500 px-4 py-4 text-base font-bold tracking-wide text-white shadow-xl shadow-brand-600/30 transition hover:shadow-2xl hover:shadow-brand-500/40">
+                <span class="relative z-10 flex items-center justify-center gap-2">
+                  Continue to secure payment
+                  <svg class="h-5 w-5 transition group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </span>
+              </button>
+              <details class="group rounded-xl border-2 border-white/15 bg-white/10 px-4 py-3 text-base ring-1 ring-white/15 open:bg-white/[0.12]">
+                <summary class="cursor-pointer list-none font-bold text-teal-100 outline-none marker:content-none [&::-webkit-details-marker]:hidden">
+                  School-issued PIN <span class="font-bold text-slate-200">(skip payment)</span>
+                </summary>
+                <div class="mt-4 space-y-3 border-t border-white/15 pt-4">
+                  <label class="block text-xs font-bold uppercase tracking-wide text-slate-100" for="schoolPin">One-time PIN from school</label>
+                  <input id="schoolPin" type="text" autocomplete="off" placeholder="Enter PIN"
+                    class="w-full rounded-xl border-2 border-white/20 bg-white px-4 py-3.5 font-mono text-base font-bold uppercase tracking-wider text-slate-950 outline-none ring-brand-400/40 placeholder:font-bold placeholder:text-slate-500 focus:border-brand-400 focus:ring-2" />
+                  <button type="button" id="schoolUnlockBtn"
+                    class="w-full rounded-xl border-2 border-white/30 bg-white/15 px-4 py-3.5 text-base font-bold text-white shadow-md transition hover:bg-white/25">
+                    View report with school PIN
+                  </button>
+                </div>
+              </details>
+            </form>
+          </div>
+
+          <div id="msg" role="alert" class="mt-4 hidden rounded-2xl border-2 px-4 py-3.5 text-base font-bold leading-snug"></div>
+        </div>
+      </div>
+
+      <!-- PDF preview (full width below hero row) -->
+      <div id="preview" class="mx-auto mt-12 hidden max-w-5xl scroll-mt-24">
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-950 ring-1 ring-emerald-200/80">Your report</span>
+            <h3 class="font-display mt-2 text-2xl font-bold text-slate-900">Report card</h3>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <a id="openTab" href="#" target="_blank" rel="noopener"
+              class="inline-flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-brand-800 shadow-md transition hover:border-brand-400 hover:bg-brand-50">
+              Open in new tab
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+            <button type="button" id="downloadPdf" disabled
+              class="inline-flex items-center gap-2 rounded-xl border-2 border-emerald-300 bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white shadow-md transition hover:border-emerald-400 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-40">
+              Download PDF
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-xl shadow-slate-300/40 ring-1 ring-slate-200/80">
+          <iframe id="pdfFrame" title="Report PDF" class="h-[70vh] min-h-[420px] w-full bg-white"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Steps -->
+  <section id="steps" class="relative z-10 -mt-16 px-4 pb-16 pt-4 sm:px-6">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-10 text-center">
+        <h2 class="font-display text-2xl font-semibold text-slate-900 sm:text-3xl">How to view your results</h2>
+        <p class="mx-auto mt-2 max-w-xl text-slate-600">Follow these three steps — from getting access to opening your official PDF report.</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        <div class="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-200/50 transition hover:border-brand-200 hover:shadow-2xl hover:shadow-brand-500/10">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-lg font-bold text-white shadow-lg shadow-brand-500/30">1</div>
+          <h3 class="font-display text-lg font-semibold text-slate-900">Enter details &amp; pay</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">
+            Add your <strong class="text-slate-800">student reference</strong>, email, and optional term/year. Continue to Paystack — your one-time PIN is created automatically after a successful payment.
+          </p>
+          <a href="#check" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-600 hover:text-brand-700">
+            Open form
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+          </a>
+        </div>
+        <div class="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-200/50 transition hover:border-teal-200 hover:shadow-2xl hover:shadow-teal-500/10 md:mt-8 md:-mb-8">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-700 text-lg font-bold text-white shadow-lg shadow-teal-500/30">2</div>
+          <h3 class="font-display text-lg font-semibold text-slate-900">Return from checkout</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">
+            After Paystack confirms payment, you’ll land back here and your report unlocks automatically. Or use a <strong class="text-slate-800">school PIN</strong> from the form if your teacher gave you one.
+          </p>
+          <a href="#check" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-teal-600 hover:text-teal-700">
+            School PIN option
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+          </a>
+        </div>
+        <div class="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl shadow-slate-200/50 transition hover:border-violet-200 hover:shadow-2xl hover:shadow-violet-500/10">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-purple-700 text-lg font-bold text-white shadow-lg shadow-violet-500/30">3</div>
+          <h3 class="font-display text-lg font-semibold text-slate-900">View &amp; download</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">
+            Your official PDF opens below the form. Open in a new tab or download from your browser.
+          </p>
+          <span class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-violet-600/80">
+            PDF loads on success
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-slate-200 bg-white py-10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-center text-sm text-slate-500 sm:flex-row sm:text-left">
+      <p>© <span id="y"></span> Student Results Portal · Secure access to official report cards.</p>
+      <a href="#check" class="font-medium text-brand-600 hover:text-brand-700">Pay &amp; view report</a>
+    </div>
+  </footer>
+
+  <div id="installPrompt" class="pointer-events-none fixed inset-x-0 bottom-4 z-[70] hidden px-4">
+    <div class="pointer-events-auto mx-auto flex w-full max-w-lg items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-2xl shadow-slate-300/40">
+      <div class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-teal-400 font-bold text-white">SR</div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-bold text-slate-900">Install Student Results app</p>
+        <p class="mt-1 text-xs text-slate-600">Add it to your home screen for faster access.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button id="installNowBtn" type="button" class="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-brand-700">Install</button>
+          <button id="installDismissBtn" type="button" class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50">Not now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="/js/home-slider.js"></script>
+  <script defer src="/js/checker.js"></script>
+  <script defer src="/js/pwa-register.js"></script>
+</body>
+</html>

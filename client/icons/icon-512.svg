@@ -1,0 +1,12 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Student Results icon">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" fill="#0f172a"/>
+  <rect x="56" y="56" width="400" height="400" rx="90" fill="url(#g)"/>
+  <path d="M150 172h212a22 22 0 0 1 22 22v124a22 22 0 0 1-22 22H150a22 22 0 0 1-22-22V194a22 22 0 0 1 22-22Z" fill="#fff" fill-opacity="0.92"/>
+  <path d="M176 224h160M176 268h128M176 312h90" stroke="#1e293b" stroke-width="20" stroke-linecap="round"/>
+</svg>

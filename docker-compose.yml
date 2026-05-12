@@ -1,0 +1,26 @@
+# Local / staging MySQL. Start: docker compose up -d
+# Then copy server/.env.example → server/.env and use MYSQL_* values from the "Docker (local)" section.
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootlocal
+      MYSQL_DATABASE: school_results
+      MYSQL_USER: schoolresults
+      MYSQL_PASSWORD: schoolresults
+    ports:
+      # Use 3307 if Windows MySQL80 already binds 3306 (common on dev PCs).
+      - "3307:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-prootlocal"]
+      interval: 4s
+      timeout: 5s
+      retries: 15
+      start_period: 10s
+    volumes:
+      - school_results_mysql:/var/lib/mysql
+
+volumes:
+  school_results_mysql:
