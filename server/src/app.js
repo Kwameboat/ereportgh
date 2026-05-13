@@ -31,8 +31,13 @@ function buildHelmet() {
         styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
         /* Allow HTTPS images (Unsplash & redirects) for hero stock photos */
         imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
-        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-        connectSrc: ["'self'"],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+        /* preconnect to Google Fonts + same-origin API */
+        connectSrc: [
+          "'self'",
+          'https://fonts.googleapis.com',
+          'https://fonts.gstatic.com',
+        ],
         frameSrc: ["'self'"],
         objectSrc: ["'none'"],
         baseUri: ["'self'"],
