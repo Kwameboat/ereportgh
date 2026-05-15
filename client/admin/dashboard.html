@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#0a0c10" />
   <meta name="application-name" content="eReport GH" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -11,265 +11,58 @@
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="icon" type="image/png" href="/assets/ereports-logo.png" />
   <link rel="apple-touch-icon" href="/assets/ereports-logo.png" />
-  <title>Admin — Results</title>
-  <style>
-    :root {
-      --bg-0: #070b14;
-      --bg-1: #0e1525;
-      --bg-2: #14233a;
-      --glass: rgba(255, 255, 255, 0.08);
-      --glass-strong: rgba(255, 255, 255, 0.12);
-      --line: rgba(255, 255, 255, 0.14);
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-      --gold-1: #fff0bd;
-      --gold-2: #d4a938;
-      --danger: #fca5a5;
-      --ok: #86efac;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--text);
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background:
-        radial-gradient(circle at 75% 8%, rgba(255, 214, 117, 0.1), transparent 35%),
-        radial-gradient(circle at 10% 40%, rgba(59, 130, 246, 0.12), transparent 32%),
-        linear-gradient(140deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(7, 11, 20, 0.74);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .topbar-inner, .layout {
-      width: min(1200px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
-    .topbar-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 0;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.28);
-      flex-shrink: 0;
-    }
-
-    .brand-text h1 {
-      margin: 0;
-      font-size: 1.1rem;
-      letter-spacing: 0.02em;
-    }
-
-    .brand-text p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    .btn {
-      border: 1px solid transparent;
-      border-radius: 12px;
-      padding: 9px 14px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.08);
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-    .btn:hover { transform: translateY(-1px); background: rgba(255, 255, 255, 0.12); }
-    .btn-gold {
-      color: #2f2205;
-      background: linear-gradient(90deg, var(--gold-1), var(--gold-2));
-      box-shadow: 0 10px 24px rgba(212, 169, 56, 0.28);
-    }
-    .btn-sm { padding: 7px 10px; font-size: 0.8rem; border-radius: 10px; }
-    .top-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
-    .muted-note { color: var(--muted); font-size: 0.78rem; }
-
-    .layout { padding: 24px 0 30px; display: grid; gap: 18px; }
-
-    .grid {
-      display: grid;
-      gap: 18px;
-      grid-template-columns: 1.8fr 1fr;
-    }
-
-    .panel {
-      border-radius: 20px;
-      background: var(--glass);
-      border: 1px solid var(--line);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-      padding: 18px;
-    }
-
-    .panel h2 {
-      margin: 0 0 14px;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-    }
-
-    #stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .metric-card {
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.06);
-      padding: 12px;
-    }
-    .metric-title { margin: 0 0 8px; font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .metric-value { margin: 0; font-size: 1.3rem; font-weight: 700; }
-
-    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-    .row-between { justify-content: space-between; }
-    input {
-      border: 1px solid transparent;
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text);
-      outline: none;
-    }
-    input:focus {
-      border-color: rgba(255, 216, 123, 0.8);
-      box-shadow: 0 0 0 3px rgba(255, 216, 123, 0.2);
-    }
-    input::placeholder { color: #cbd5e1a8; }
-
-    .table-wrap { overflow: auto; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 12px; }
-    table { width: 100%; border-collapse: collapse; }
-    thead th {
-      text-align: left;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      padding: 11px 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-    }
-    tbody td {
-      font-size: 0.86rem;
-      padding: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.8rem; }
-    a { color: #f8df8f; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .link-btn { background: none; border: 0; color: #f8df8f; cursor: pointer; padding: 0; font-size: 0.8rem; }
-
-    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .scroll-box { max-height: 250px; overflow: auto; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px; background: rgba(0, 0, 0, 0.16); }
-    #pinsOut, #detailPre, #pinGenResult { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.8rem; color: #dbe5f3; }
-    #detailPre { max-height: 380px; }
-
-    .tag-row { margin: 8px 0 12px; display: flex; gap: 8px; }
-    .tag-row .btn { padding: 6px 10px; font-size: 0.76rem; border-radius: 999px; }
-    .danger { border-color: rgba(252, 165, 165, 0.5); color: #fee2e2; }
-    .danger:hover { background: rgba(252, 165, 165, 0.16); }
-    .ok { color: var(--ok); }
-    .hidden { display: none; }
-    .status-pill {
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.05);
-    }
-    select {
-      border: 1px solid transparent;
-      border-radius: 10px;
-      padding: 8px 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text);
-    }
-    .toast {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 40;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: rgba(7, 11, 20, 0.9);
-      color: #fff;
-      padding: 10px 12px;
-      font-size: 0.8rem;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(8px);
-      transition: all 0.22s ease;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
-
-    @media (max-width: 1000px) {
-      #stats { grid-template-columns: repeat(2, 1fr); }
-      .grid, .split { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 640px) {
-      .topbar-inner {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .brand-text p { display: none; }
-      .top-actions {
-        justify-content: flex-start;
-        width: 100%;
-      }
-      .layout {
-        width: min(1200px, calc(100% - 20px));
-      }
-    }
-  </style>
+  <title>eReport GH — Executive Portal</title>
+  <link rel="stylesheet" href="/css/admin-executive.css" />
 </head>
-<body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <img src="/assets/ereports-logo.png" alt="eReports logo" class="brand-logo" />
-        <div class="brand-text">
-          <h1>eReports Command Center</h1>
-          <p>Manage students, PINs, payments, and report workflows</p>
+<body class="exec-app">
+  <div class="exec-overlay" id="execOverlay" aria-hidden="true"></div>
+
+  <aside class="exec-sidebar" id="execSidebar" aria-label="Main navigation">
+    <div class="exec-sidebar-brand">
+      <img src="/assets/ereports-logo.png" alt="eReport GH" width="40" height="40" />
+      <div>
+        <strong>eReports</strong>
+        <span>Executive Portal</span>
+      </div>
+    </div>
+    <nav class="exec-nav" aria-label="Sections">
+      <a href="#sec-dashboard" data-nav-section="sec-dashboard" class="is-active">
+        <span class="exec-nav-icon" aria-hidden="true">▣</span> Dashboard
+      </a>
+      <a href="#sec-students" data-nav-section="sec-students">
+        <span class="exec-nav-icon" aria-hidden="true">◎</span> Students
+      </a>
+      <a href="#sec-schools" data-nav-section="sec-schools">
+        <span class="exec-nav-icon" aria-hidden="true">◇</span> Schools
+      </a>
+      <a href="#sec-pins" data-nav-section="sec-pins">
+        <span class="exec-nav-icon" aria-hidden="true">#</span> PINs
+      </a>
+      <a href="#sec-payments" data-nav-section="sec-payments">
+        <span class="exec-nav-icon" aria-hidden="true">₵</span> Payments
+      </a>
+      <a href="#sec-settings" data-nav-section="sec-settings">
+        <span class="exec-nav-icon" aria-hidden="true">⚙</span> Settings
+      </a>
+    </nav>
+    <div class="exec-sidebar-foot">
+      <a href="/" target="_blank" rel="noopener">Public portal</a>
+      · eReport GH
+    </div>
+  </aside>
+
+  <div class="exec-main">
+    <header class="exec-header">
+      <div class="exec-header-left">
+        <button type="button" class="exec-menu-btn" id="execMenuBtn" aria-label="Open menu">☰</button>
+        <div class="exec-page-title">
+          <h1>Executive Overview</h1>
+          <p>Real-time metrics across your institution network</p>
         </div>
       </div>
-      <div class="top-actions">
+      <div class="exec-header-actions">
         <span id="lastSync" class="muted-note">Last sync: --</span>
-        <button type="button" id="btnRefreshAll" class="btn btn-sm">Refresh all</button>
+        <button type="button" id="btnRefreshAll" class="btn btn-gold btn-sm">Refresh all</button>
         <label class="muted-note">Auto
           <select id="autoRefreshEvery">
             <option value="0">Off</option>
@@ -278,191 +71,235 @@
             <option value="120">2m</option>
           </select>
         </label>
-        <button type="button" id="logout" class="btn">Logout</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="layout">
-    <section id="stats"></section>
-
-    <section class="grid">
-      <div class="panel">
-        <h2>Students</h2>
-        <div class="row">
-          <input id="search" placeholder="Search ID, name, class..." style="min-width: 220px; flex: 1;" />
-          <button type="button" id="btnSearch" class="btn btn-gold">Search</button>
-          <button type="button" id="btnExportStudents" class="btn">Export CSV</button>
-        </div>
-        <div class="row row-between" style="margin-top: 10px;">
-          <span id="studentsMeta" class="muted-note">Showing 0 records</span>
-          <div class="row">
-            <button type="button" id="btnPrevPage" class="btn btn-sm">Prev</button>
-            <span id="pageInfo" class="status-pill">Page 1</span>
-            <button type="button" id="btnNextPage" class="btn btn-sm">Next</button>
+        <div class="exec-user-chip">
+          <img src="/assets/ereports-logo.png" alt="" width="28" height="28" />
+          <div>
+            <strong id="adminUserName">Admin</strong>
+            <span id="adminUserRole">Administrator</span>
           </div>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-            <tr>
-              <th>ID</th>
-              <th>Ref</th>
-              <th>School Ref</th>
-              <th>Name</th>
-              <th>Class</th>
-              <th>Term / Year</th>
-              <th>PDF</th>
-              <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody id="stuBody"></tbody>
-          </table>
-        </div>
+        <button type="button" id="logout" class="btn btn-sm">Logout</button>
       </div>
+    </header>
 
-      <div class="panel">
-        <h2>Student detail</h2>
-        <section id="detail" class="hidden">
-          <div class="scroll-box"><pre id="detailPre"></pre></div>
-          <div class="row" style="margin-top: 12px;">
-            <button type="button" id="btnRegen" class="btn btn-gold">Regenerate PDF</button>
-            <button type="button" id="btnDel" class="btn danger">Delete student</button>
-            <button type="button" id="btnCopyStudent" class="btn">Copy Student Ref</button>
-            <a id="btnPdf" href="#" target="_blank" class="btn">Open PDF</a>
+    <main class="exec-content layout">
+      <section id="sec-dashboard" class="exec-section">
+        <div class="exec-section-head">
+          <span class="exec-section-tag">Overview</span>
+          <h2>Key performance indicators</h2>
+          <p>Students, PINs, and payment activity at a glance.</p>
+        </div>
+        <section id="stats" aria-live="polite"></section>
+      </section>
+
+      <section id="sec-students" class="exec-section">
+        <div class="exec-section-head">
+          <span class="exec-section-tag">Student management</span>
+          <h2>Students &amp; report cards</h2>
+          <p>Search records, view detail, regenerate PDFs, and export data.</p>
+        </div>
+        <section class="grid">
+          <div class="panel">
+            <h2>Students</h2>
+            <div class="row">
+              <input id="search" placeholder="Search ID, name, class..." style="min-width: 220px; flex: 1;" />
+              <button type="button" id="btnSearch" class="btn btn-gold">Search</button>
+              <button type="button" id="btnExportStudents" class="btn">Export CSV</button>
+            </div>
+            <div class="row row-between" style="margin-top: 10px;">
+              <span id="studentsMeta" class="muted-note">Showing 0 records</span>
+              <div class="row">
+                <button type="button" id="btnPrevPage" class="btn btn-sm">Prev</button>
+                <span id="pageInfo" class="status-pill">Page 1</span>
+                <button type="button" id="btnNextPage" class="btn btn-sm">Next</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Ref</th>
+                    <th>School Ref</th>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Term / Year</th>
+                    <th>PDF</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="stuBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Student detail</h2>
+            <section id="detail" class="hidden">
+              <div class="scroll-box"><pre id="detailPre"></pre></div>
+              <div class="row" style="margin-top: 12px;">
+                <button type="button" id="btnRegen" class="btn btn-gold">Regenerate PDF</button>
+                <button type="button" id="btnDel" class="btn danger">Delete student</button>
+                <button type="button" id="btnCopyStudent" class="btn">Copy Student Ref</button>
+                <a id="btnPdf" href="#" target="_blank" class="btn">Open PDF</a>
+              </div>
+            </section>
+            <p id="emptyDetail" class="muted-note" style="font-size: 0.9rem;">Select a student to view full detail.</p>
           </div>
         </section>
-        <p id="emptyDetail" style="color: var(--muted); font-size: 0.9rem;">Select a student to view full detail.</p>
-      </div>
-    </section>
+      </section>
 
-    <section class="split">
-      <div class="panel">
-        <h2>PINs</h2>
-        <div class="tag-row">
-          <button type="button" id="pinsAll" class="btn">All</button>
-          <button type="button" id="pinsUnused" class="btn">Unused</button>
-          <button type="button" id="pinsUsed" class="btn">Used</button>
+      <section id="sec-pins" class="exec-section">
+        <div class="exec-section-head">
+          <span class="exec-section-tag">Access control</span>
+          <h2>PIN management</h2>
+          <p>Filter, generate bulk PINs, and copy codes for distribution.</p>
         </div>
-        <div class="row">
-          <input id="pinsFilter" placeholder="Filter by pin code or student ref..." style="flex: 1;" />
-          <button type="button" id="btnCopyPins" class="btn">Copy visible</button>
-        </div>
-        <div class="scroll-box" id="pinsOut"></div>
-        <h2 style="margin-top: 14px;">Generate bulk PINs</h2>
-        <div class="row">
-          <input id="pinCount" type="number" min="1" max="500" value="10" style="width: 90px;" />
-          <input id="pinNote" placeholder="Batch note" style="flex: 1; min-width: 180px;" />
-          <button type="button" id="btnPins" class="btn btn-gold">Generate</button>
-        </div>
-        <pre id="pinGenResult" class="scroll-box hidden" style="margin-top: 10px;"></pre>
-      </div>
+        <section class="split">
+          <div class="panel">
+            <h2>PINs</h2>
+            <div class="tag-row">
+              <button type="button" id="pinsAll" class="btn">All</button>
+              <button type="button" id="pinsUnused" class="btn">Unused</button>
+              <button type="button" id="pinsUsed" class="btn">Used</button>
+            </div>
+            <div class="row">
+              <input id="pinsFilter" placeholder="Filter by pin code or student ref..." style="flex: 1;" />
+              <button type="button" id="btnCopyPins" class="btn">Copy visible</button>
+            </div>
+            <div class="scroll-box" id="pinsOut"></div>
+            <h2 style="margin-top: 14px;">Generate bulk PINs</h2>
+            <div class="row">
+              <input id="pinCount" type="number" min="1" max="500" value="10" style="width: 90px;" />
+              <input id="pinNote" placeholder="Batch note" style="flex: 1; min-width: 180px;" />
+              <button type="button" id="btnPins" class="btn btn-gold">Generate</button>
+            </div>
+            <pre id="pinGenResult" class="scroll-box hidden" style="margin-top: 10px;"></pre>
+          </div>
 
-      <div class="panel">
-        <h2>Payments</h2>
-        <div class="row" style="margin-bottom: 10px;">
-          <select id="payStatusFilter">
-            <option value="all">All status</option>
-            <option value="success">Success</option>
-            <option value="pending">Pending</option>
-            <option value="failed">Failed</option>
-          </select>
-          <input id="paySearch" placeholder="Search ref or email..." style="flex: 1;" />
-        </div>
-        <div class="scroll-box" id="payOut"></div>
-      </div>
-    </section>
+          <div class="panel" id="sec-payments">
+            <h2>Payments</h2>
+            <div class="row" style="margin-bottom: 10px;">
+              <select id="payStatusFilter">
+                <option value="all">All status</option>
+                <option value="success">Success</option>
+                <option value="pending">Pending</option>
+                <option value="failed">Failed</option>
+              </select>
+              <input id="paySearch" placeholder="Search ref or email..." style="flex: 1;" />
+            </div>
+            <div class="scroll-box" id="payOut"></div>
+          </div>
+        </section>
+      </section>
 
-    <section class="panel">
-      <h2>Paystack Credentials</h2>
-      <div class="row">
-        <input id="paystackSecret" type="password" placeholder="Paystack secret key (leave blank to keep current)" style="min-width: 320px; flex: 1;" />
-        <input id="paystackCallback" placeholder="Callback URL (e.g. https://domain/payment.html)" style="min-width: 320px; flex: 1;" />
-      </div>
-      <div class="row" style="margin-top: 10px;">
-        <button type="button" id="btnSavePaystack" class="btn btn-gold">Save Paystack Settings</button>
-        <span id="paystackState" class="muted-note">Paystack status: unknown</span>
-      </div>
-    </section>
+      <section id="sec-schools" class="exec-section">
+        <div class="exec-section-head">
+          <span class="exec-section-tag">Institutional intelligence</span>
+          <h2>Schools onboarding</h2>
+          <p>Register schools, manage API keys, and Excel sync references.</p>
+        </div>
+        <section class="panel">
+          <h2>Schools Onboarding</h2>
+          <div class="row">
+            <input id="schoolName" placeholder="School name" style="min-width: 180px; flex: 1;" />
+            <input id="schoolEmail" placeholder="Contact email (optional)" style="min-width: 180px;" />
+            <input id="schoolPhone" placeholder="Contact phone (optional)" style="min-width: 160px;" />
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <input id="schoolAddress" placeholder="School address (optional)" style="flex: 1; min-width: 280px;" />
+            <button type="button" id="btnAddSchool" class="btn btn-gold">Add school + generate ref</button>
+          </div>
+          <p class="muted-note" style="margin-top: 10px;">
+            Excel upload: use header <span class="mono">X-School-Ref</span> + API key in <span class="mono">X-API-Key</span>.
+          </p>
+          <div class="table-wrap" style="margin-top: 10px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>School</th>
+                  <th>Reference</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="schoolsBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
 
-    <section class="split">
-      <div class="panel">
-        <h2>Users (Superadmin)</h2>
-        <div class="row">
-          <input id="newUserName" placeholder="Username" style="min-width: 130px;" />
-          <input id="newUserPass" placeholder="Password (min 8 chars)" style="min-width: 170px;" />
-          <select id="newUserRole">
-            <option value="admin">Admin</option>
-            <option value="superadmin">Superadmin</option>
-          </select>
-          <button type="button" id="btnCreateUser" class="btn btn-gold">Add user</button>
+      <section id="sec-settings" class="exec-section">
+        <div class="exec-section-head">
+          <span class="exec-section-tag">Configuration</span>
+          <h2>Settings &amp; administration</h2>
+          <p>Paystack, admin users, and system limits (superadmin).</p>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="usersBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="panel">
-        <h2>Settings & Limits (Superadmin)</h2>
-        <div class="row">
-          <label class="muted-note">Max admin users</label>
-          <input id="setMaxAdmins" type="number" min="1" max="100" style="width: 100px;" />
-        </div>
-        <div class="row" style="margin-top: 8px;">
-          <label class="muted-note">Default PIN batch count</label>
-          <input id="setPinBatch" type="number" min="1" max="500" style="width: 100px;" />
-        </div>
-        <div class="row" style="margin-top: 8px;">
-          <label class="muted-note">Dashboard auto refresh (sec)</label>
-          <input id="setAutoRefresh" type="number" min="0" max="3600" style="width: 100px;" />
-        </div>
-        <div class="row" style="margin-top: 12px;">
-          <button type="button" id="btnSaveSettings" class="btn btn-gold">Save settings</button>
-        </div>
-      </div>
-    </section>
 
-    <section class="panel">
-      <h2>Schools Onboarding</h2>
-      <div class="row">
-        <input id="schoolName" placeholder="School name" style="min-width: 180px; flex: 1;" />
-        <input id="schoolEmail" placeholder="Contact email (optional)" style="min-width: 180px;" />
-        <input id="schoolPhone" placeholder="Contact phone (optional)" style="min-width: 160px;" />
-      </div>
-      <div class="row" style="margin-top: 10px;">
-        <input id="schoolAddress" placeholder="School address (optional)" style="flex: 1; min-width: 280px;" />
-        <button type="button" id="btnAddSchool" class="btn btn-gold">Add school + generate ref</button>
-      </div>
-      <p class="muted-note" style="margin-top: 10px;">
-        For Excel sync use: header <span class="mono">X-School-Ref</span> + generated API key in <span class="mono">X-API-Key</span>.
-      </p>
-      <div class="table-wrap" style="margin-top: 10px;">
-        <table>
-          <thead>
-            <tr>
-              <th>School</th>
-              <th>Reference</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="schoolsBody"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-  <div id="toast" class="toast"></div>
+        <section class="panel" style="margin-bottom: 18px;">
+          <h2>Paystack Credentials</h2>
+          <div class="row">
+            <input id="paystackSecret" type="password" placeholder="Paystack secret key (leave blank to keep current)" style="min-width: 280px; flex: 1;" />
+            <input id="paystackCallback" placeholder="Callback URL (e.g. https://domain/payment.html)" style="min-width: 280px; flex: 1;" />
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <button type="button" id="btnSavePaystack" class="btn btn-gold">Save Paystack Settings</button>
+            <span id="paystackState" class="muted-note">Paystack status: unknown</span>
+          </div>
+        </section>
 
+        <section class="split">
+          <div class="panel">
+            <h2>Users (Superadmin)</h2>
+            <div class="row">
+              <input id="newUserName" placeholder="Username" style="min-width: 130px;" />
+              <input id="newUserPass" placeholder="Password (min 8 chars)" style="min-width: 170px;" />
+              <select id="newUserRole">
+                <option value="admin">Admin</option>
+                <option value="superadmin">Superadmin</option>
+              </select>
+              <button type="button" id="btnCreateUser" class="btn btn-gold">Add user</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <h2>Settings &amp; Limits (Superadmin)</h2>
+            <div class="row">
+              <label class="muted-note">Max admin users</label>
+              <input id="setMaxAdmins" type="number" min="1" max="100" style="width: 100px;" />
+            </div>
+            <div class="row" style="margin-top: 8px;">
+              <label class="muted-note">Default PIN batch count</label>
+              <input id="setPinBatch" type="number" min="1" max="500" style="width: 100px;" />
+            </div>
+            <div class="row" style="margin-top: 8px;">
+              <label class="muted-note">Dashboard auto refresh (sec)</label>
+              <input id="setAutoRefresh" type="number" min="0" max="3600" style="width: 100px;" />
+            </div>
+            <div class="row" style="margin-top: 12px;">
+              <button type="button" id="btnSaveSettings" class="btn btn-gold">Save settings</button>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script defer src="/js/admin-shell.js"></script>
   <script defer src="/js/admin-dashboard.js"></script>
   <script defer src="/js/pwa-register.js"></script>
 </body>

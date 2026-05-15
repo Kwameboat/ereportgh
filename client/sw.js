@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'ereportgh-pwa-v2';
+﻿const CACHE_NAME = 'ereportgh-pwa-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -7,6 +7,8 @@ const STATIC_ASSETS = [
   '/admin/dashboard.html',
   '/offline.html',
   '/css/public-theme.css',
+  '/css/admin-executive.css',
+  '/js/admin-shell.js',
   '/js/checker.js',
   '/js/home-slider.js',
   '/js/payment.js',

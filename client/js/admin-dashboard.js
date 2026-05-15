@@ -405,6 +405,7 @@
     const d = await res.json();
     me = d.admin || null;
     toggleSuperadminUI();
+    if (typeof window.execAdminSetUser === 'function') window.execAdminSetUser(me);
   }
 
   async function loadUsers() {
