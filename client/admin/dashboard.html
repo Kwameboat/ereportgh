@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f172a" />
-  <meta name="application-name" content="Student Results" />
+  <meta name="application-name" content="eReport GH" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Student Results" />
+  <meta name="apple-mobile-web-app-title" content="eReport GH" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+  <link rel="icon" type="image/png" href="/assets/ereports-logo.png" />
+  <link rel="apple-touch-icon" href="/assets/ereports-logo.png" />
   <title>Admin — Results</title>
   <style>
     :root {
@@ -238,6 +239,21 @@
     @media (max-width: 1000px) {
       #stats { grid-template-columns: repeat(2, 1fr); }
       .grid, .split { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .brand-text p { display: none; }
+      .top-actions {
+        justify-content: flex-start;
+        width: 100%;
+      }
+      .layout {
+        width: min(1200px, calc(100% - 20px));
+      }
     }
   </style>
 </head>

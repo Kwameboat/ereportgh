@@ -1,7 +1,7 @@
 (function () {
   if (!('serviceWorker' in navigator)) return;
 
-  const DISMISS_KEY = 'sr_pwa_install_dismissed';
+  const DISMISS_KEY = 'ereportgh_pwa_install_dismissed';
   const promptEl = document.getElementById('installPrompt');
   const installBtn = document.getElementById('installNowBtn');
   const dismissBtn = document.getElementById('installDismissBtn');

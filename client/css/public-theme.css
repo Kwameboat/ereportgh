@@ -136,3 +136,80 @@
     opacity 0.25s ease,
     box-shadow 0.25s ease;
 }
+
+/* —— Mobile layout (public pages) —— */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+.site-header-inner {
+  row-gap: 0.5rem;
+}
+
+.site-nav {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .hero-section-themed {
+    padding-bottom: 1.5rem;
+  }
+
+  .hero-slider-col {
+    min-height: auto;
+  }
+
+  .hero-slider-col .slider-3d-root {
+    min-height: 15rem;
+  }
+
+  #steps {
+    margin-top: -2rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .hero-slider-col .slider-3d-root {
+    min-height: 12.5rem;
+  }
+
+  .hero-slide .slide-inner {
+    padding-bottom: 5.25rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .hero-slide .slide-inner h1,
+  .hero-slide .slide-inner h2 {
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+
+  .hero-form-glass {
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .hero-slider-col .slider-3d-stage {
+    border-radius: 1rem;
+  }
+
+  #preview iframe#pdfFrame {
+    min-height: 16rem;
+    height: 55vh;
+  }
+
+  #installPrompt {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}

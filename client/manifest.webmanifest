@@ -1,24 +1,30 @@
 ﻿{
-  "name": "Student Results Portal",
-  "short_name": "Student Results",
+  "name": "eReport GH",
+  "short_name": "eReport GH",
   "description": "Access student report cards securely from any device.",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f8fafc",
+  "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "icons": [
     {
-      "src": "/icons/icon-192.svg",
+      "src": "/assets/ereports-logo.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.svg",
+      "src": "/assets/ereports-logo.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "/assets/ereports-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

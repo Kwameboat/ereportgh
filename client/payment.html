@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0f172a" />
-  <meta name="application-name" content="Student Results" />
+  <meta name="application-name" content="eReport GH" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Student Results" />
+  <meta name="apple-mobile-web-app-title" content="eReport GH" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
-  <title>Payment — Student Results</title>
+  <link rel="icon" type="image/png" href="/assets/ereports-logo.png" />
+  <link rel="apple-touch-icon" href="/assets/ereports-logo.png" />
+  <title>Payment — eReport GH</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -18,12 +19,12 @@
   <script src="/js/tailwind-public-config.js"></script>
   <link rel="stylesheet" href="/css/public-theme.css" />
 </head>
-<body class="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
+<body class="min-h-screen overflow-x-hidden bg-slate-50 font-sans text-slate-800 antialiased">
   <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-900/90 backdrop-blur-md">
-    <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
-      <a href="index.html" class="flex items-center gap-2">
-        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-teal-400 text-lg font-bold text-white shadow-lg shadow-brand-500/25">SR</span>
-        <span class="font-display text-lg font-semibold tracking-tight text-white">Student Results</span>
+    <div class="site-header-inner mx-auto flex max-w-6xl w-full flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <a href="index.html" class="flex min-w-0 items-center gap-2.5">
+        <img src="/assets/ereports-logo.png" alt="eReport GH" class="h-9 w-9 shrink-0 rounded-xl object-cover ring-1 ring-white/25 shadow-lg shadow-brand-500/25" />
+        <span class="font-display truncate text-base font-semibold tracking-tight text-white sm:text-lg">eReport GH</span>
       </a>
       <a href="index.html#check" class="rounded-full px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-white/10 hover:text-white sm:text-sm">Back to checker</a>
     </div>

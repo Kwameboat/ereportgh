@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'sr-pwa-v1';
+﻿const CACHE_NAME = 'ereportgh-pwa-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -14,8 +14,7 @@ const STATIC_ASSETS = [
   '/js/admin-dashboard.js',
   '/js/pwa-register.js',
   '/manifest.webmanifest',
-  '/icons/icon-192.svg',
-  '/icons/icon-512.svg'
+  '/assets/ereports-logo.png'
 ];
 
 self.addEventListener('install', (event) => {
