@@ -46,12 +46,15 @@ async function migrate() {
         } catch (e) {
           if (e.code !== 'ER_DUP_KEYNAME') throw e;
         }
+        const defaultPaymentSubunit = String(config.payment.amountSubunit || 1000);
         await conn.query(
           `INSERT INTO app_settings (\`key\`, \`value\`) VALUES
             ('max_admin_users', '5'),
             ('default_pin_batch_count', '10'),
-            ('dashboard_auto_refresh_sec', '60')
-          ON DUPLICATE KEY UPDATE \`value\` = \`value\``
+            ('dashboard_auto_refresh_sec', '60'),
+            ('payment_amount_subunit', ?)
+          ON DUPLICATE KEY UPDATE \`value\` = \`value\``,
+          [defaultPaymentSubunit]
         );
         const [rows] = await conn.query('SELECT COUNT(*) AS c FROM admins');
         if (rows[0].c === 0) {

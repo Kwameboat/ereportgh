@@ -373,6 +373,7 @@
       'setMaxAdmins',
       'setPinBatch',
       'setAutoRefresh',
+      'setPaymentAmountGhs',
       'btnSaveSettings',
     ];
     const disabled = !isSuperadmin();
@@ -452,6 +453,13 @@
     }
     if (s.default_pin_batch_count != null) {
       document.getElementById('pinCount').value = String(s.default_pin_batch_count);
+    }
+    const paySub = parseInt(s.payment_amount_subunit, 10);
+    const payEl = document.getElementById('setPaymentAmountGhs');
+    if (payEl && Number.isFinite(paySub) && paySub >= 100) {
+      payEl.value = (paySub / 100).toFixed(2);
+    } else if (payEl) {
+      payEl.value = '10.00';
     }
   }
 
@@ -546,6 +554,7 @@
       maxAdminUsers: parseInt(document.getElementById('setMaxAdmins').value, 10),
       defaultPinBatchCount: parseInt(document.getElementById('setPinBatch').value, 10),
       dashboardAutoRefreshSec: parseInt(document.getElementById('setAutoRefresh').value, 10),
+      paymentAmountGhs: parseFloat(document.getElementById('setPaymentAmountGhs').value),
     };
     const res = await api('/api/admin/settings', {
       method: 'PUT',

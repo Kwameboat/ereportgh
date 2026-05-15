@@ -313,6 +313,7 @@ router.put('/settings', requireAdmin, requireSuperadmin, asyncHandler(async (req
   const maxAdminUsers = parseInt(req.body?.maxAdminUsers, 10);
   const defaultPinBatchCount = parseInt(req.body?.defaultPinBatchCount, 10);
   const dashboardAutoRefreshSec = parseInt(req.body?.dashboardAutoRefreshSec, 10);
+  const paymentAmountGhs = parseFloat(req.body?.paymentAmountGhs);
   if (!Number.isFinite(maxAdminUsers) || maxAdminUsers < 1 || maxAdminUsers > 100) {
     const e = new Error('maxAdminUsers must be between 1 and 100');
     e.status = 400;
@@ -328,10 +329,22 @@ router.put('/settings', requireAdmin, requireSuperadmin, asyncHandler(async (req
     e.status = 400;
     throw e;
   }
+  if (!Number.isFinite(paymentAmountGhs) || paymentAmountGhs < 1) {
+    const e = new Error('paymentAmountGhs must be at least 1.00 (GHS)');
+    e.status = 400;
+    throw e;
+  }
+  const paymentAmountSubunit = Math.round(paymentAmountGhs * 100);
+  if (paymentAmountSubunit < 100) {
+    const e = new Error('paymentAmountGhs is too low (minimum GHS 1.00)');
+    e.status = 400;
+    throw e;
+  }
   const updates = [
     ['max_admin_users', String(maxAdminUsers)],
     ['default_pin_batch_count', String(defaultPinBatchCount)],
     ['dashboard_auto_refresh_sec', String(dashboardAutoRefreshSec)],
+    ['payment_amount_subunit', String(paymentAmountSubunit)],
   ];
   for (const [key, value] of updates) {
     await pool.query(

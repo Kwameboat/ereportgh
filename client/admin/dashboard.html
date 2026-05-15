@@ -289,6 +289,11 @@
               <label class="muted-note">Dashboard auto refresh (sec)</label>
               <input id="setAutoRefresh" type="number" min="0" max="3600" style="width: 100px;" />
             </div>
+            <div class="row" style="margin-top: 8px;">
+              <label class="muted-note">PIN / report fee (GHS)</label>
+              <input id="setPaymentAmountGhs" type="number" min="1" step="0.01" style="width: 120px;" title="Amount parents pay per PIN (Paystack)" />
+              <span class="muted-note">e.g. 10.00 = GHS 10.00 per unlock</span>
+            </div>
             <div class="row" style="margin-top: 12px;">
               <button type="button" id="btnSaveSettings" class="btn btn-gold">Save settings</button>
             </div>

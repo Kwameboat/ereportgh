@@ -95,7 +95,7 @@
     const year = document.getElementById('year').value.trim();
 
     if (!studentId) {
-      showMsg('Enter your student reference.', true);
+      showMsg('Enter your school reference.', true);
       return;
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -180,7 +180,7 @@
       const year = document.getElementById('year').value.trim();
 
       if (!studentId) {
-        showMsg('Enter your student reference.', true);
+        showMsg('Enter your school reference.', true);
         return;
       }
       if (!pin) {

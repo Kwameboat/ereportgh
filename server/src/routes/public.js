@@ -5,6 +5,7 @@ const { asyncHandler } = require('../middleware/errorHandler');
 const { pool } = require('../db/pool');
 const { getStudentBundleByPublicId } = require('../services/studentIngest');
 const { initializeTransaction, verifyAndIssuePin } = require('../services/paystackService');
+const { getPaymentAmountSubunit, getPaymentCurrency } = require('../services/paymentSettings');
 
 const router = express.Router();
 
@@ -42,14 +43,14 @@ router.post('/validate-pin', checkLimiter, asyncHandler(async (req, res) => {
       throw e;
     }
     if (p.student_id_bound && String(p.student_id_bound) !== sid) {
-      const e = new Error('This PIN is not valid for this student ID');
+      const e = new Error('This PIN is not valid for this school reference');
       e.status = 400;
       throw e;
     }
 
     const bundle = await getStudentBundleByPublicId(sid, term, year);
     if (!bundle) {
-      const e = new Error('No result record found for this student');
+      const e = new Error('No result record found for this school reference');
       e.status = 404;
       throw e;
     }
@@ -87,7 +88,8 @@ router.post('/validate-pin', checkLimiter, asyncHandler(async (req, res) => {
  * Fixed fee shown on checkout (amount is never taken from the client).
  */
 router.get('/payment-settings', asyncHandler(async (req, res) => {
-  const { amountSubunit, currency } = config.payment;
+  const amountSubunit = await getPaymentAmountSubunit();
+  const currency = await getPaymentCurrency();
   const main = Number(amountSubunit) / 100;
   res.json({
     ok: true,
@@ -106,7 +108,7 @@ router.post('/paystack/initialize', payLimiter, asyncHandler(async (req, res) =>
   const { email, studentId, term, year, callbackUrl } = req.body || {};
   const sid = studentId != null ? String(studentId).trim() : '';
   if (!sid) {
-    const e = new Error('student reference is required');
+    const e = new Error('school reference is required');
     e.status = 400;
     throw e;
   }
@@ -120,23 +122,25 @@ router.post('/paystack/initialize', payLimiter, asyncHandler(async (req, res) =>
   const bundle = await getStudentBundleByPublicId(sid, term, year);
   if (!bundle) {
     const e = new Error(
-      'No result record found for this student. Check the reference number and optional term/year.'
+      'No result record found for this school. Check the school reference and optional term/year.'
     );
     e.status = 404;
     throw e;
   }
 
-  const amountSubunit = config.payment.amountSubunit;
+  const amountSubunit = await getPaymentAmountSubunit();
   if (!amountSubunit || Number(amountSubunit) < 100) {
     const e = new Error('Payment amount is not configured on the server');
     e.status = 503;
     throw e;
   }
 
+  const currency = await getPaymentCurrency();
+
   const out = await initializeTransaction({
     email: emailTrim,
     amountSubunit: Number(amountSubunit),
-    currency: config.payment.currency,
+    currency,
     studentId: sid,
     term,
     year,

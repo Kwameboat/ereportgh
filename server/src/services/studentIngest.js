@@ -209,17 +209,21 @@ async function upsertStudentWithResults(payload, opts = {}) {
   }
 }
 
-async function getStudentBundleByPublicId(studentId, term, year) {
+async function getStudentBundleByPublicId(publicRef, term, year) {
+  const ref = String(publicRef).trim();
+  if (!ref) return null;
   let rows;
+  const idMatch = '(student_id = ? OR school_ref = ?)';
+  const params = [ref, ref];
   if (term !== undefined && term !== null && term !== '' && year !== undefined && year !== null && year !== '') {
     [rows] = await pool.query(
-      'SELECT * FROM students WHERE student_id = ? AND term <=> ? AND year <=> ?',
-      [studentId, String(term).trim(), String(year).trim()]
+      `SELECT * FROM students WHERE ${idMatch} AND term <=> ? AND year <=> ?`,
+      [...params, String(term).trim(), String(year).trim()]
     );
   } else {
     [rows] = await pool.query(
-      'SELECT * FROM students WHERE student_id = ? ORDER BY updated_at DESC LIMIT 1',
-      [studentId]
+      `SELECT * FROM students WHERE ${idMatch} ORDER BY updated_at DESC LIMIT 1`,
+      params
     );
   }
   if (!rows.length) return null;
